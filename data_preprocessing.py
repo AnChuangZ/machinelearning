@@ -25,8 +25,8 @@ def Import():
 
     #处理Insulin
     data_mean3=data['Insulin'].mean()
-    data.loc[data['Insulin']==0,'Insulin']=data_mean3
-    
+    data.loc[data['Insulin']==0,'Insulin']=data_mean3          
+
     #处理BMI
     pan_1 = data[data['BMI']<18.5].index.to_list()
     pan_2 = data[(data['BMI']>=18.5)&(data['BMI']<24)].index.to_list()
@@ -58,7 +58,7 @@ def Standardization(data):
 
 #低方差特征过滤
 def LowVarianceFiltering(data):
-    transfer=VarianceThreshold()
+    transfer=VarianceThreshold(threshold=50)
     data_new=transfer.fit_transform(data)
     #print(data_new,data_new.shape)
     return data_new
@@ -109,7 +109,7 @@ if __name__=="__main__":
 
     print("\n")
 
-    print("低方差特征过滤：")   ##在进行低方差过滤，阈值设为5的情况下，特征减少到7个，决策树的准确率在0.7左右，而随机森林的准确率达到了0.8；在阈值为200的情况下，特征减少到6个，决策树的准确率下降到0.64~0.69，而随机森林在0.75~0.84之间
+    print("低方差特征过滤：")   ##在进行低方差过滤，阈值设为5的情况下，特征减少到7个，决策树的准确率在0.7左右，而随机森林的准确率达到了0.8
     data=LowVarianceFiltering(data_init)
     DecisionTree(data,target) 
     RandomForest(data,target)
